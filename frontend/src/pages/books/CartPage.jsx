@@ -1,13 +1,25 @@
+/* eslint-disable no-unused-vars */
 
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getImgUrl } from '../../utils/getimgUrl';
+import { clearCart, removeFromCart } from '../../redux/features/cart/cartSlice';
 
 const CartPage = () => {
     const cartItems = useSelector(state => state.cart.cartItems);
+    const dispatch = useDispatch()
 
     const totalPrice = cartItems.reduce((acc, item) => acc + item.newPrice, 0).toFixed(2);
+
+    const handleRemoveFromCart = (product) => {
+      dispatch(removeFromCart(product))
+    }
+
+    const handleClearCart = () => {
+      dispatch(clearCart())
+    }
+
   return (
     <div className="flex flex-col h-full mt-12 overflow-hidden bg-white shadow-xl">
     <div className="flex-1 px-4 py-6 overflow-y-auto sm:px-6">
@@ -16,7 +28,7 @@ const CartPage = () => {
         <div className="flex items-center ml-3 h-7 ">
           <button
             type="button"
-            
+            onClick={handleClearCart}
             className="relative px-2 py-1 -m-2 text-white transition-all duration-200 bg-red-500 rounded-md hover:bg-secondary "
           >
             <span className="">Clear Cart</span>
