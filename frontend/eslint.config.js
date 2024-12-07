@@ -5,7 +5,6 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  js.configs.recommended,
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
@@ -25,7 +24,7 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
-      'no-unused-vars': 'disable',
+
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
@@ -35,7 +34,8 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-    },
+      
+    }
   },
 ]
 

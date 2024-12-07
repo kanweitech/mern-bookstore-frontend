@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import bannerImg from "../../assets/banner.png";
 
