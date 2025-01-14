@@ -24,7 +24,7 @@ const booksApi = createApi({
         }),
         fetchBookById: builder.query({
             query: (id) => `/${id}`,
-            providesTag: (result, error, id) => [{ type: "Books", id }]
+            providesTag: (result, error, id) => [{ type: "Books", id }],
         }),
         addBook: builder.mutation({
             query: (newBook) => ({

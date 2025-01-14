@@ -2,17 +2,39 @@ import { Outlet } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar' 
 import Footer from './components/Footer'
+import { AuthProvide } from './context/AuthContext'
+import Loading from './components/Loading'
+import { useEffect, useState } from 'react'
 
 function App() {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    // Cleanup timer
+    return () => clearTimeout(timer);
+  }, []);
   
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <>
-      <Navbar/>
-      <main className='min-h-screen px-4 py-6 mx-auto max-w-screen-2xl font-primary'>
-      <Outlet/>
-      </main>
-      <Footer/>
+      <AuthProvide>
+
+        <Navbar/>
+        <main className='min-h-screen px-4 py-6 mx-auto max-w-screen-2xl font-primary'>
+          <Outlet/>
+        </main>
+        <Footer/>
+
+      </AuthProvide>
+      
     </>
   )
 }

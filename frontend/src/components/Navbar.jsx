@@ -7,6 +7,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import avatarImg from "../assets/avatar.png"
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
 const navigation = [
     {name: "Dashboard", href:"/dashboard"},
@@ -18,12 +19,16 @@ const navigation = [
 const Navbar = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    // console.log(isDropdownOpen)
-
     const cartItems = useSelector(state => state.cart.cartItems);
-    console.log(cartItems)
+    
+    const {currentUser, logout} = useAuth()
 
-    const currentUser = false;
+    const handleLogout = () => {
+        logout()
+    }
+
+    const token = localStorage.getItem('token');
+
     return (
         <header className="px-4 py-6 mx-auto max-w-screen-2xl">
             <nav className="flex items-center justify-between ">
@@ -39,13 +44,14 @@ const Navbar = () => {
                         <IoSearchOutline className="absolute inline-block left-3 inset-y-2" />
 
                         <input type="text" placeholder="Search here" 
-                        className="bg-[#EAEAEA] w-full py-1 md:px-8 px-6 rounded-md focus:outline-none"/>
+                            className="bg-[#EAEAEA] w-full py-1 md:px-8 px-6 rounded-md focus:outline-none"
+                        />
                     </div>
                 </div>
 
                  
                 {/* right side */}
-                 <div className="relative flex items-center space-x-2 md:space-x-3">
+                <div className="relative flex items-center space-x-2 md:space-x-3">
                     <div>
                         {
                             currentUser ? <>
@@ -67,27 +73,33 @@ const Navbar = () => {
                                                     </li>
                                                 ))
                                             }
+                                            <li>
+                                                <button 
+                                                onClick={handleLogout}
+                                                className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100">Logout</button>
+                                            </li>
                                         </ul>
                                     </div>
                                 )
                             }
-                            </> : <Link to="/login"><HiOutlineUser className="size-6" /></Link>
+                            </> : token ? <Link to="/dashboard" className="border-b-2 border-primary">Dashboard</Link> : (
+                                <Link to="/login"><HiOutlineUser className="size-6" /></Link>
+                            )
                         }
                     </div>
 
-                 <button className="hidden sm:block">
-                 <HiOutlineHeart className="size-6" />
-                 </button>
+                    <button className="hidden sm:block">
+                        <HiOutlineHeart className="size-6" />
+                    </button>
 
-                <Link to="/cart" className="flex items-center p-1 px-2 rounded-sm bg-primary sm:px-6">
-                <HiOutlineShoppingCart className='' />
-                {
-                    cartItems.length > 0 ? <span className="text-sm font-semibold sm">{cartItems.length}</span> :
-                    <span className="text-sm font-semibold sm">0</span>
-                }
+                    <Link to="/cart" className="flex items-center p-1 px-2 rounded-sm bg-primary sm:px-6">
+                        <HiOutlineShoppingCart className='' />
+                        {
+                            cartItems.length > 0 ? <span className="text-sm font-semibold sm">{cartItems.length}</span> : <span className="text-sm font-semibold sm">0</span>
+                        }
                 
-                </Link>
-                 </div>
+                    </Link>
+                </div>
             </nav>
         </header>
     )
